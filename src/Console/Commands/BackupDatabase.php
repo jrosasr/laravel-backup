@@ -138,7 +138,7 @@ class BackupDatabase extends Command
         $this->info("Guardando la copia de seguridad localmente...");
 
         // Obtener la ruta de la configuración del paquete.
-        $localPath = config('backup.local_path', 'app/private/backups');
+        $localPath = config('backup.local_path', 'backups');
         // Construir la ruta completa del archivo dentro del disco local.
         $diskFilePath = "{$localPath}/{$sqlFileName}";
 

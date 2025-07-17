@@ -54,12 +54,12 @@ Si eliges b2, asegúrate de configurar tus credenciales de Backblaze B2 en tu ar
 #### Ejemplo de .env para B2:
 
 ```
-B2_ENDPOINT=[https://s3.us-west-004.backblazeb2.com](https://s3.us-west-004.backblazeb2.com) # Reemplaza con tu endpoint de B2
-B2_APPLICATION_KEY_ID=your_b2_application_key_id
-B2_APPLICATION_KEY=your_b2_application_key
-B2_REGION=us-west-004 # Reemplaza con tu región
-B2_BUCKET_NAME=your_b2_bucket_name
-DB_DOCKER_CONTAINER_NAME=your_docker_container_name # Opcional, si tu DB está en Docker
+B2_ENDPOINT="https://s3.us-west-004.backblazeb2.com"    # Reemplaza con tu endpoint de B2
+B2_APPLICATION_KEY_ID="your_b2_application_key_id"
+B2_APPLICATION_KEY="your_b2_application_key"
+B2_REGION="us-west-004"
+B2_BUCKET_NAME="your_b2_bucket_name"
+DB_DOCKER_CONTAINER_NAME="your_docker_container_name"   # Opcional, si tu DB está en Docker
 ```
 
 Ejemplo de config/filesystems.php (asegúrate de que el disco 'b2' esté configurado como 's3' driver):
@@ -84,12 +84,20 @@ Ejemplo de config/filesystems.php (asegúrate de que el disco 'b2' esté configu
 ],
 ```
 
-## Uso
-Para generar una copia de seguridad de tu base de datos, simplemente ejecuta el siguiente comando Artisan:
+## Comandos
+
+El paquete proporciona los siguientes comandos Artisan para gestionar tus copias de seguridad:
+
+### 1. Generar solo el respaldo de la base de datos
 
 ```
-php artisan lbackup:store
+php artisan lbackup:db
 ```
+Este comando genera un archivo de respaldo de la base de datos en la ruta storage/app/private/backups, en base al driver configurado (`local` o `b2`) lo sube o lo almacena.
 
-El paquete utilizará el driver especificado en tu variable BACKUP_DRIVER del .env para almacenar el backup.
+### 2. Almacenar un respaldo existente en el almacenamiento configurado
 
+```
+php artisan lbackup:storage
+```
+Este comando genera un archivo `zip` con los archivos ubicados en storage/private y storage/public, y toma el archivo de respaldo existente (por ejemplo `backup_2025_01_01.zip`) y lo almacena en el driver configurado (`local` o `b2`).
