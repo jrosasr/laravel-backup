@@ -4,7 +4,7 @@ namespace jrosasr\LaravelBackup;
 
 use Illuminate\Support\ServiceProvider;
 use jrosasr\LaravelBackup\Console\Commands\BackupDatabase;
-
+use jrosasr\LaravelBackup\Console\Commands\BackupStorage;
 
 class BackupServiceProvider extends ServiceProvider
 {
@@ -23,6 +23,7 @@ class BackupServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands([
                 BackupDatabase::class,
+                BackupStorage::class,
             ]);
         }
     }
