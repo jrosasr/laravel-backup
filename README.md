@@ -1,54 +1,55 @@
 
+
 # jrosasr/laravel-backup
 
-Paquete de Laravel para automatizar y simplificar la creación de copias de seguridad de bases de datos, con almacenamiento local o en la nube. Ideal para desarrolladores y administradores que buscan una solución robusta y flexible, compatible con entornos Docker.
+Laravel package to automate and simplify database backup creation, with local or cloud storage. Ideal for developers and administrators seeking a robust and flexible solution, compatible with Docker environments.
 
 ---
 
-## Tabla de Contenidos
+## Table of Contents
 
 - [jrosasr/laravel-backup](#jrosasrlaravel-backup)
-  - [Tabla de Contenidos](#tabla-de-contenidos)
-  - [Características Principales](#características-principales)
-  - [Compatibilidad](#compatibilidad)
-    - [Bases de datos soportadas](#bases-de-datos-soportadas)
-    - [Servicios de almacenamiento soportados](#servicios-de-almacenamiento-soportados)
-  - [Versiones de Laravel Compatibles](#versiones-de-laravel-compatibles)
-  - [Instalación](#instalación)
-  - [Configuración](#configuración)
-  - [Comandos](#comandos)
-    - [1. Generar respaldo de la base de datos](#1-generar-respaldo-de-la-base-de-datos)
-    - [2. Almacenar un respaldo existente en el almacenamiento configurado](#2-almacenar-un-respaldo-existente-en-el-almacenamiento-configurado)
-  - [Soporte](#soporte)
-  - [Licencia](#licencia)
+  - [Table of Contents](#table-of-contents)
+  - [Main Features](#main-features)
+  - [Compatibility](#compatibility)
+    - [Supported Databases](#supported-databases)
+    - [Supported Storage Services](#supported-storage-services)
+  - [Supported Laravel Versions](#supported-laravel-versions)
+  - [Installation](#installation)
+  - [Configuration](#configuration)
+  - [Commands](#commands)
+    - [1. Generate a database backup](#1-generate-a-database-backup)
+    - [2. Store an existing backup in the configured storage](#2-store-an-existing-backup-in-the-configured-storage)
+  - [Support](#support)
+  - [License](#license)
 
 ---
 
-## Características Principales
+## Main Features
 
-- **Respaldo de Base de Datos:** Copias de seguridad completas de tu base de datos.
-- **Soporte Docker:** Ejecuta `pg_dump` dentro de un contenedor Docker si tu base de datos está dockerizada.
-- **Almacenamiento Flexible:**
-  - **Local:** Guarda los respaldos en el sistema de archivos del servidor.
-  - **Backblaze B2:** Sube los respaldos a un bucket de Backblaze B2.
-- **Configurable:** Elige el driver de almacenamiento (`local` o `b2`) fácilmente.
+- **Database Backup:** Full backups of your database.
+- **Docker Support:** Runs `pg_dump` inside a Docker container if your database is dockerized.
+- **Flexible Storage:**
+  - **Local:** Stores backups on the server's filesystem.
+  - **Backblaze B2:** Uploads backups to a Backblaze B2 bucket.
+- **Configurable:** Easily choose the storage driver (`local` or `b2`).
 
 ---
 
-## Compatibilidad
+## Compatibility
 
-### Bases de datos soportadas
+### Supported Databases
 
-| Base de datos   | Soportado |
-|----------------|:---------:|
-| PostgreSQL     | ✅        |
-| MySQL          | ❌        |
-| MongoDB        | ❌        |
-| SQLite         | ❌        |
+| Database     | Supported |
+|--------------|:---------:|
+| PostgreSQL   | ✅        |
+| MySQL        | ❌        |
+| MongoDB      | ❌        |
+| SQLite       | ❌        |
 
-### Servicios de almacenamiento soportados
+### Supported Storage Services
 
-| Servicio             | Soportado |
+| Service              | Supported |
 |----------------------|:---------:|
 | Backblaze B2         | ✅        |
 | AWS S3               | ❌        |
@@ -57,19 +58,19 @@ Paquete de Laravel para automatizar y simplificar la creación de copias de segu
 
 ---
 
-## Versiones de Laravel Compatibles
+## Supported Laravel Versions
 
-| Versión de Laravel   | Soportado |
-|----------------------|:---------:|
-| 10.x                 |    ✅     |
-| 11.x                 |    ✅     |
-| 12.x                 |    ✅     |
+| Laravel Version   | Supported |
+|-------------------|:---------:|
+| 10.x              |    ✅     |
+| 11.x              |    ✅     |
+| 12.x              |    ✅     |
 
 ---
 
-## Instalación
+## Installation
 
-Instala el paquete vía Composer:
+Install the package via Composer:
 
 ```bash
 composer require jrosasr/laravel-backup
@@ -77,30 +78,30 @@ composer require jrosasr/laravel-backup
 
 ---
 
-## Configuración
+## Configuration
 
-1. Publica el archivo de configuración:
+1. Publish the configuration file:
    ```bash
    php artisan vendor:publish --tag=backup-config
    ```
-   Esto copiará el archivo `backup.php` a tu directorio `config/`.
+   This will copy the `backup.php` file to your `config/` directory.
 
-2. En tu archivo `.env`, define el driver de almacenamiento:
+2. In your `.env` file, set the storage driver:
    ```env
-   BACKUP_DRIVER=local # o BACKUP_DRIVER=b2
+   BACKUP_DRIVER=local # or BACKUP_DRIVER=b2
    ```
 
-3. Si usas Backblaze B2, configura las credenciales en `.env`:
+3. If you use Backblaze B2, set the credentials in `.env`:
    ```env
-   B2_ENDPOINT="https://s3.us-west-004.backblazeb2.com"    # Reemplaza con tu endpoint de B2
+   B2_ENDPOINT="https://s3.us-west-004.backblazeb2.com"    # Replace with your B2 endpoint
    B2_APPLICATION_KEY_ID="your_b2_application_key_id"
    B2_APPLICATION_KEY="your_b2_application_key"
    B2_REGION="us-west-004"
    B2_BUCKET_NAME="your_b2_bucket_name"
-   DB_DOCKER_CONTAINER_NAME="your_docker_container_name"   # Opcional, si tu DB está en Docker
+   DB_DOCKER_CONTAINER_NAME="your_docker_container_name"   # Optional, if your DB is in Docker
    ```
 
-4. Ejemplo de configuración en `config/filesystems.php`:
+4. Example configuration in `config/filesystems.php`:
    ```php
    'b2' => [
        'driver' => 's3',
@@ -123,32 +124,32 @@ composer require jrosasr/laravel-backup
 
 ---
 
-## Comandos
+## Commands
 
-El paquete proporciona los siguientes comandos Artisan para gestionar tus copias de seguridad:
+The package provides the following Artisan commands to manage your backups:
 
-### 1. Generar respaldo de la base de datos
+### 1. Generate a database backup
 
 ```bash
 php artisan lbackup:db
 ```
-Genera un archivo de respaldo de la base de datos en la ruta `storage/app/private/backups` y, según el driver configurado (`local` o `b2`), lo almacena o sube automáticamente.
+Generates a database backup file in the `storage/app/private/backups` path and, depending on the configured driver (`local` or `b2`), stores or uploads it automatically.
 
-### 2. Almacenar un respaldo existente en el almacenamiento configurado
+### 2. Store an existing backup in the configured storage
 
 ```bash
 php artisan lbackup:storage
 ```
-Genera un archivo `zip` con los archivos ubicados en `storage/private` y `storage/public`, y toma el archivo de respaldo existente (por ejemplo, `backup_2025_01_01.zip`) para almacenarlo en el driver configurado (`local` o `b2`).
+Creates a `zip` file with the files located in `storage/private` and `storage/public`, and takes the existing backup file (e.g., `backup_2025_01_01.zip`) to store it in the configured driver (`local` or `b2`).
 
 ---
 
-## Soporte
+## Support
 
-¿Tienes dudas, sugerencias o encontraste un bug? Abre un issue en el repositorio o contacta al autor.
+Have questions, suggestions, or found a bug? Open an issue in the repository.
 
 ---
 
-## Licencia
+## License
 
 MIT
