@@ -105,7 +105,6 @@ class BackupDatabase extends Command
 
             $this->info('Proceso de respaldo completado con éxito.');
             return Command::SUCCESS;
-
         } catch (ProcessFailedException $exception) {
             $this->error('Error al ejecutar el comando de respaldo: ' . $exception->getMessage());
             $this->error('Salida de error: ' . $process->getErrorOutput());
